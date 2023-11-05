@@ -40,10 +40,25 @@ flowAddOption(_, _, []).
 %Descripcion: Predicado que crea un Chatbot.
 %Dominio: chatbotID (int) X name (String) X welcomeMessage (String) X startFlowId(int) X  flows (Lista de 0 o más flujos) X chatbot
 %Metodo: Recursion de Cola en el predicado "EliminarRepetidos" y "getChatbotFlowsClean".
-%Metas primarias: flowAddOption/4.
-%Metas secundarias: getOptionsFlow/2, maplist/3, getOptionCode/2, member/2, addToEnd/3, mFlow/4.
+%Metas primarias: chatbot/6.
+%Metas secundarias: getFlowId/2, maplist/3, eliminarRepetidos/2, getChatbotFlowsClean/3, mChatbot/6.
 chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, Chatbot):-
     maplist(getFlowId, Flows, FlowId_List),
     eliminarRepetidos(FlowId_List, FlowId_Clean),
     getChatbotFlowsClean(FlowId_Clean, Flows, Flow_Clean),
     mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flow_Clean, Chatbot).
+
+%Descripcion: Predicado que añade un Flow a un Chatbot.
+%Dominio: chatbot X flow X chatbot.
+%Metodo: No.
+%Metas primarias: chatbotAddFlow/3.
+%Metas secundarias: getChatbotFlows/2, maplist/3, getFlowId/2, member/2, addToEnd/3, mChatbot/6.
+chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
+    getChatbotFlows(ChatbotIn, Chatbot_Flows),
+    maplist(getFlowId, Chatbot_Flows, Chatbot_Id_Flows),
+    getFlowId(Flow, Flow_ID),
+    \+ member(Flow_ID, Chatbot_Id_Flows),
+    addToEnd(Flow, Chatbot_Flows, NewChatbot_Flows),
+    mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, _, ChatbotIn),
+    mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, NewChatbot_Flows, ChatbotOut).
+chatbotAddFlow(_, _, []).

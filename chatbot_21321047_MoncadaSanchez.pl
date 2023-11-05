@@ -1,4 +1,4 @@
-:- module(chatbot_21321047_MoncadaSanchez, [mChatbot/6, getChatbotFlowsClean/3]).
+:- module(chatbot_21321047_MoncadaSanchez, [mChatbot/6, getChatbotFlows/2, getChatbotFlowsClean/3]).
 
 :- use_module(flow_21321047_MoncadaSanchez).
 
@@ -9,6 +9,14 @@
 %Metas secundarias: Ninguna.
 mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, 
     [ChatbotID, Name, WelcomeMessage, StartFlowId, Flows]).
+
+%Descripcion: Predicado que obtiene una lista de Flows de un Chatbot
+%Dominio: Chatbot (list) x Flows(list)
+%Metodo: No.
+%Metas primarias: getChatbotFlows/2.
+%Metas secundarias: mChatbot/6.
+getChatbotFlows(Chatbot, Flows) :-
+    mChatbot(_, _, _, _, Flows, Chatbot).
 
 %Descripcion: Predicado creador de una lista de Flows limpia(sin repetidos) a base de lista de id
 %Dominio: ListaDeID (list) x ListaDeFlows (list) x Resultado(list)
