@@ -1,4 +1,4 @@
-:- module(option_21321047_MoncadaSanchez, [mOption/6, getCodeOption/2]).
+:- module(option_21321047_MoncadaSanchez, [mOption/6, getOptionCode/2]).
 
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option (list)
@@ -11,7 +11,7 @@ mOption(Code, Message, Codelink, InitialFlowCodeLink, Keywords,
 %Descripcion: Predicado que obtiene un Code de un Option
 %Dominio: Option (list) x Code(int)
 %Metodo: No.
-%Metas primarias: getCodeOption/2.
+%Metas primarias: getOptionCode/2.
 %Metas secundarias: mOption/6.
-getCodeOption(Option, Code) :-
+getOptionCode(Option, Code) :-
     mOption(Code, _, _, _, _, Option).
