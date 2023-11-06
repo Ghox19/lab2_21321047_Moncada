@@ -2,6 +2,7 @@
 :- use_module(common_21321047_MoncadaSanchez).
 :- use_module(flow_21321047_MoncadaSanchez).
 :- use_module(chatbot_21321047_MoncadaSanchez).
+:- use_module(system_21321047_MoncadaSanchez).
 
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option
@@ -62,3 +63,23 @@ chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
     mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, _, ChatbotIn),
     mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, NewChatbot_Flows, ChatbotOut).
 chatbotAddFlow(_, _, []).
+
+%Descripcion: Predicado que crea un System.
+%Dominio: name (string) X InitialChatbotCodeLink (Int) X chatbots (Lista de 0 o más chatbots) X system
+%Metodo: Recursion de Cola en el predicado "EliminarRepetidos", "getSystemChatbotsClean" y "getChatbotInitialFlowIdById".
+%Metas primarias: system/4.
+%Metas secundarias: getChatbotId/2, maplist/3, eliminarRepetidos/2, getSystemChatbotsClean/3, getChatbotInitialFlowIdById/3, mSystem/9.
+system(Name, InitialChatbotCodeLink, Chatbot, System):-
+    maplist(getChatbotId, Chatbot, ChatbotID_List),
+    eliminarRepetidos(ChatbotID_List, ChatbotId_Clean),
+    getSystemChatbotsClean(ChatbotId_Clean, Chatbot, Chatbot_Clean),
+    getChatbotInitialFlowIdById(InitialChatbotCodeLink, Chatbot_Clean, ActualFlowCodeLink),
+    mSystem(Name, 
+            [], 
+            [], 
+            [], 
+            InitialChatbotCodeLink, 
+            InitialChatbotCodeLink, 
+            ActualFlowCodeLink, 
+            Chatbot_Clean, 
+            System).
