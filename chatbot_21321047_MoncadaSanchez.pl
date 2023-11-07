@@ -4,7 +4,7 @@
 
 %Descripcion: Predicado creador de un Chatbot como lista
 %Dominio: chatbotID (int) X name (String) X welcomeMessage (String) X startFlowId(int) X  flows (Lista de 0 o más flujos) X chatbot(list)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: mChatbot/6.
 %Metas secundarias: Ninguna.
 mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, 
@@ -12,7 +12,7 @@ mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows,
 
 %Descripcion: Predicado que obtiene un Id de un Chatbot
 %Dominio: Chatbot (list) x Id (int)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: getChatbotId/2.
 %Metas secundarias: mChatbot/6.
 getChatbotId(Chatbot, Id) :-
@@ -20,7 +20,7 @@ getChatbotId(Chatbot, Id) :-
 
 %Descripcion: Predicado que obtiene una lista de Flows de un Chatbot
 %Dominio: Chatbot (list) x Flows(list)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: getChatbotFlows/2.
 %Metas secundarias: mChatbot/6.
 getChatbotFlows(Chatbot, Flows) :-
@@ -28,7 +28,7 @@ getChatbotFlows(Chatbot, Flows) :-
 
 %Descripcion: Predicado que obtiene la Id del flow inicial de un Chatbot
 %Dominio: Chatbot (list) x StartFlowId (int)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: getChatbotStartFlowId/2.
 %Metas secundarias: mChatbot/6.
 getChatbotStartFlowId(Chatbot, StartFlowId) :-

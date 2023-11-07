@@ -6,7 +6,7 @@
 
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: option/6.
 %Metas secundarias: mOption/6.
 option(Code, Message, Codelink, InitialFlowCodeLink, Keywords, Option):-
@@ -23,10 +23,10 @@ flow(Id, Name_msg, Option, Flow):-
     getFlowOptionsClean(OptionId_Clean, Option, Option_Clean),
     mFlow(Id, Name_msg, Option_Clean, Flow).
 
-%Descripcion: Predicado que agtrega un Flow a una option.
+%Descripcion: Predicado que agrega un Flow a una option.
 %Dominio: flow X option X flow.
 %Metodo: Recursion de Cola en el predicado addToEnd.
-%Metas primarias: flowAddOption/4.
+%Metas primarias: flowAddOption/3.
 %Metas secundarias: getOptionsFlow/2, maplist/3, getOptionCode/2, member/2, addToEnd/3, mFlow/4.
 flowAddOption(FlowIn, Option, FlowOut):-
     getFlowOptions(FlowIn, Flow_Options),
@@ -51,7 +51,7 @@ chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, Chatbot):-
 
 %Descripcion: Predicado que añade un Flow a un Chatbot.
 %Dominio: chatbot X flow X chatbot.
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: chatbotAddFlow/3.
 %Metas secundarias: getChatbotFlows/2, maplist/3, getFlowId/2, member/2, addToEnd/3, mChatbot/6.
 chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
@@ -83,3 +83,17 @@ system(Name, InitialChatbotCodeLink, Chatbot, System):-
             ActualFlowCodeLink, 
             Chatbot_Clean, 
             System).
+
+%Descripcion: Predicado que agrega un Chatbot a un System.
+%Dominio: SystemIn X Chatbot X SystemOut.
+%Metodo: Recursion de Cola en el predicado addToEnd.
+%Metas primarias: SystemAddChatbot/3.
+%Metas secundarias: getSystemChatbot/2, maplist/3, getChatbotId/2, member/2, addToEnd/3, setSystemNewChatbot/3.
+systemAddChatbot(SystemIn, Chatbot, SystemOut):-
+    getSystemChatbot(SystemIn, System_Chatbots),
+    maplist(getChatbotId, System_Chatbots, System_ID_Chatbots),
+    getChatbotId(Chatbot, Chatbot_ID),
+    \+ member(Chatbot_ID, System_ID_Chatbots),
+    addToEnd(Chatbot, System_Chatbots, NewSystem_Chatbots),
+    setSystemNewChatbot(SystemIn, NewSystem_Chatbots, SystemOut).
+systemAddChatbot(SystemIn, _, SystemIn).

@@ -4,14 +4,14 @@
 
 %Descripcion: Predicado creador de un Flow como lista
 %Dominio: id (int) X name-msg (String)  X Option  (Lista de 0 o más opciones) X Flow (list)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: mflow/4.
 %Metas secundarias: Ninguna.
 mFlow(Id, Name_msg, Option, [Id, Name_msg, Option]).
 
 %Descripcion: Predicado que obtiene un id de un Flow
 %Dominio: Flow (list) x Id(int)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: getOptionsFlow/2.
 %Metas secundarias: mFlow/4.
 getFlowId(Flow, Id) :-
@@ -19,7 +19,7 @@ getFlowId(Flow, Id) :-
 
 %Descripcion: Predicado que obtiene una lista de Opciones de un Flow
 %Dominio: Flow (list) x Options(list)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: getOptionsFlow/2.
 %Metas secundarias: mFlow/4.
 getFlowOptions(Flow, Options) :-

@@ -2,7 +2,7 @@
 
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option (list)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: mOption/6.
 %Metas secundarias: ninguna.
 mOption(Code, Message, Codelink, InitialFlowCodeLink, Keywords, 
@@ -10,7 +10,7 @@ mOption(Code, Message, Codelink, InitialFlowCodeLink, Keywords,
 
 %Descripcion: Predicado que obtiene un Code de un Option
 %Dominio: Option (list) x Code(int)
-%Metodo: No.
+%Metodo: Ninguno.
 %Metas primarias: getOptionCode/2.
 %Metas secundarias: mOption/6.
 getOptionCode(Option, Code) :-
