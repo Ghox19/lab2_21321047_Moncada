@@ -36,7 +36,6 @@ flowAddOption(FlowIn, Option, FlowOut):-
     addToEnd(Option, Flow_Options, NewFlow_Options),
     mFlow(IdInput, Name_msgInput, _, FlowIn),
     mFlow(IdInput, Name_msgInput, NewFlow_Options, FlowOut).
-flowAddOption(_, _, []).
 
 %Descripcion: Predicado que crea un Chatbot.
 %Dominio: chatbotID (int) X name (String) X welcomeMessage (String) X startFlowId(int) X  flows (Lista de 0 o más flujos) X chatbot
@@ -62,7 +61,6 @@ chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
     addToEnd(Flow, Chatbot_Flows, NewChatbot_Flows),
     mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, _, ChatbotIn),
     mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, NewChatbot_Flows, ChatbotOut).
-chatbotAddFlow(_, _, []).
 
 %Descripcion: Predicado que crea un System.
 %Dominio: name (string) X InitialChatbotCodeLink (Int) X chatbots (Lista de 0 o más chatbots) X system
@@ -86,7 +84,7 @@ system(Name, InitialChatbotCodeLink, Chatbot, System):-
 
 %Descripcion: Predicado que agrega un Chatbot a un System.
 %Dominio: SystemIn X Chatbot X SystemOut.
-%Metodo: Recursion de Cola en el predicado addToEnd.
+%Metodo: Recursion de Cola en el predicado "addToEnd".
 %Metas primarias: SystemAddChatbot/3.
 %Metas secundarias: getSystemChatbot/2, maplist/3, getChatbotId/2, member/2, addToEnd/3, setSystemNewChatbot/3.
 systemAddChatbot(SystemIn, Chatbot, SystemOut):-
@@ -97,3 +95,14 @@ systemAddChatbot(SystemIn, Chatbot, SystemOut):-
     addToEnd(Chatbot, System_Chatbots, NewSystem_Chatbots),
     setSystemNewChatbot(SystemIn, NewSystem_Chatbots, SystemOut).
 systemAddChatbot(SystemIn, _, SystemIn).
+
+%Descripcion: Predicado que agrega un Chatbot a un System.
+%Dominio: SystemIn X User X SystemOut.
+%Metodo: Recursion de Cola en el predicado "addToEnd".
+%Metas primarias: SystemAddUser/3.
+%Metas secundarias: getSystemUsers/2, member/2, addToEnd/3, setSystemNewUser/3.
+systemAddUser(SystemIn, User, SystemOut):-
+    getSystemUsers(SystemIn, Users_List),
+    \+ member(User, Users_List),
+    addToEnd(User, Users_List, NewUsers_List),
+    setSystemNewUser(SystemIn, NewUsers_List, SystemOut).
