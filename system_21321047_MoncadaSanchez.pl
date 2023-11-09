@@ -1,4 +1,7 @@
-:- module(system_21321047_MoncadaSanchez, [mSystem/9, getSystemUsers/2, getSystemChatbot/2, getSystemChatbotsClean/3, setSystemNewChatbot/3, setSystemNewUser/3]).
+:- module(system_21321047_MoncadaSanchez, [mSystem/9, getSystemUsers/2, 
+                                           getSystemLogedUser/2,getSystemChatbot/2, 
+                                           getSystemChatbotsClean/3, setSystemNewChatbot/3, 
+                                           setSystemNewUser/3, setSystemNewLogedUser/3]).
 
 :- use_module(chatbot_21321047_MoncadaSanchez).
 
@@ -7,10 +10,10 @@
 %Metodo: Ninguno.
 %Metas primarias: mSystem/9.
 %Metas secundarias: Ninguna.
-mSystem(Name, Users, Loged_User, ChatHistory, InitialChatbotCodeLink, ActualChatbotCodeLink, ActualFlowCodeLink, Chatbot, 
+mSystem(Name, Users, LogedUser, ChatHistory, InitialChatbotCodeLink, ActualChatbotCodeLink, ActualFlowCodeLink, Chatbot, 
         [Name, 
         Users, 
-        Loged_User, 
+        LogedUser, 
         ChatHistory, 
         InitialChatbotCodeLink, 
         ActualChatbotCodeLink, 
@@ -24,6 +27,14 @@ mSystem(Name, Users, Loged_User, ChatHistory, InitialChatbotCodeLink, ActualChat
 %Metas secundarias: mSystem/9.
 getSystemUsers(System, Users):-
     mSystem(_, Users, _, _, _, _, _, _, System).
+
+%Descripcion: Predicado que obtiene una lista del Usuario Logeado de un System
+%Dominio: System (list) x User (list)
+%Metodo: Ninguno.
+%Metas primarias: getSystemUsers/2.
+%Metas secundarias: mSystem/9.
+getSystemLogedUser(System, LogedUser):-
+    mSystem(_, _, LogedUser, _, _, _, _, _, System).
 
 %Descripcion: Predicado que obtiene una lista de Chatbots de un System
 %Dominio: System (list) x Chatbot (list)
@@ -54,7 +65,7 @@ getSystemChatbotsClean([_ | T], [HO | TO], [HO | Resultado]) :-
 setSystemNewChatbot(SystemIn, NewSystemChatbots, SystemOut):-
     mSystem(NameInput, 
             UsersInput, 
-            Loged_UserInput, 
+            LogedUserInput, 
             ChatHistoryInput, 
             InitialChatbotCodeLinkInput, 
             ActualChatbotCodeLinkInput, 
@@ -63,7 +74,7 @@ setSystemNewChatbot(SystemIn, NewSystemChatbots, SystemOut):-
             SystemIn),
     mSystem(NameInput, 
             UsersInput, 
-            Loged_UserInput, 
+            LogedUserInput, 
             ChatHistoryInput, 
             InitialChatbotCodeLinkInput, 
             ActualChatbotCodeLinkInput, 
@@ -79,7 +90,7 @@ setSystemNewChatbot(SystemIn, NewSystemChatbots, SystemOut):-
 setSystemNewUser(SystemIn, NewUsersList, SystemOut):-
     mSystem(NameInput, 
             _, 
-            Loged_UserInput, 
+            LogedUserInput, 
             ChatHistoryInput, 
             InitialChatbotCodeLinkInput, 
             ActualChatbotCodeLinkInput, 
@@ -87,8 +98,33 @@ setSystemNewUser(SystemIn, NewUsersList, SystemOut):-
             System_ChatbotsInput,
             SystemIn),
     mSystem(NameInput, 
-            NewUsers_List, 
-            Loged_UserInput, 
+            NewUsersList, 
+            LogedUserInput, 
+            ChatHistoryInput, 
+            InitialChatbotCodeLinkInput, 
+            ActualChatbotCodeLinkInput, 
+            ActualFlowCodeLinkInput,
+            System_ChatbotsInput,
+            SystemOut).
+
+%Descripcion: Predicado que define un nuevo System con un nuevo User Logeado
+%Dominio: SystemIn x LogedUser (string) x SystemOut 
+%Metodo: Ninguno.
+%Metas primarias: setSystemNewLogedUser/3.
+%Metas secundarias: mSystem/9.
+setSystemNewLogedUser(SystemIn, LogedUser, SystemOut):-
+    mSystem(NameInput, 
+            Users_ListInput, 
+            _, 
+            ChatHistoryInput, 
+            InitialChatbotCodeLinkInput, 
+            ActualChatbotCodeLinkInput, 
+            ActualFlowCodeLinkInput,
+            System_ChatbotsInput,
+            SystemIn),
+    mSystem(NameInput, 
+            Users_ListInput, 
+            LogedUser, 
             ChatHistoryInput, 
             InitialChatbotCodeLinkInput, 
             ActualChatbotCodeLinkInput, 

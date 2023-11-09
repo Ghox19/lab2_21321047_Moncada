@@ -3,6 +3,7 @@
 :- use_module(flow_21321047_MoncadaSanchez).
 :- use_module(chatbot_21321047_MoncadaSanchez).
 :- use_module(system_21321047_MoncadaSanchez).
+:- use_module(user_21321047_MoncadaSanchez).
 
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option
@@ -85,7 +86,7 @@ system(Name, InitialChatbotCodeLink, Chatbot, System):-
 %Descripcion: Predicado que agrega un Chatbot a un System.
 %Dominio: SystemIn X Chatbot X SystemOut.
 %Metodo: Recursion de Cola en el predicado "addToEnd".
-%Metas primarias: SystemAddChatbot/3.
+%Metas primarias: systemAddChatbot/3.
 %Metas secundarias: getSystemChatbot/2, maplist/3, getChatbotId/2, member/2, addToEnd/3, setSystemNewChatbot/3.
 systemAddChatbot(SystemIn, Chatbot, SystemOut):-
     getSystemChatbot(SystemIn, System_Chatbots),
@@ -96,13 +97,24 @@ systemAddChatbot(SystemIn, Chatbot, SystemOut):-
     setSystemNewChatbot(SystemIn, NewSystem_Chatbots, SystemOut).
 systemAddChatbot(SystemIn, _, SystemIn).
 
-%Descripcion: Predicado que agrega un Chatbot a un System.
+%Descripcion: Predicado que agrega un Usuario a un System.
 %Dominio: SystemIn X User X SystemOut.
 %Metodo: Recursion de Cola en el predicado "addToEnd".
-%Metas primarias: SystemAddUser/3.
+%Metas primarias: systemAddUser/3.
 %Metas secundarias: getSystemUsers/2, member/2, addToEnd/3, setSystemNewUser/3.
 systemAddUser(SystemIn, User, SystemOut):-
     getSystemUsers(SystemIn, Users_List),
     \+ member(User, Users_List),
     addToEnd(User, Users_List, NewUsers_List),
     setSystemNewUser(SystemIn, NewUsers_List, SystemOut).
+
+%Descripcion: Predicado que permite logear un User a un System.
+%Dominio: SystemIn X User X SystemOut.
+%Metodo: Ninguno.
+%Metas primarias: systemLogin/3.
+%Metas secundarias: getSystemUsers/2, member/2, isLogedUser/1, setSystemNewLogedUser/3.
+systemLogin(SystemIn, User, SystemOut):-
+    getSystemUsers(SystemIn, Users_List),
+    member(User, Users_List),   
+    isLogedUser(SystemIn),
+    setSystemNewLogedUser(SystemIn, [User], SystemOut).
