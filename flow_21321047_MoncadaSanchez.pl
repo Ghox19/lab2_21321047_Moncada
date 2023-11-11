@@ -1,4 +1,5 @@
-:- module(flow_21321047_MoncadaSanchez, [mFlow/4, getFlowId/2, getFlowOptionsClean/3, getFlowOptions/2]).
+:- module(flow_21321047_MoncadaSanchez, [mFlow/4, getFlowId/2, getFlowOptionsClean/3, 
+                                        getFlowOptions/2, getFlowById/3]).
 
 :- use_module(option_21321047_MoncadaSanchez).
 
@@ -38,3 +39,9 @@ getFlowOptionsClean([H | T], [HO | TO], Resultado) :-
 getFlowOptionsClean([_ | T], [HO | TO], [HO | Resultado]) :-
     getFlowOptionsClean(T, TO, Resultado).
 
+getFlowById([], _, []).
+getFlowById([H | T], Id_Flow, Resultado):-
+    getFlowId(H, Id_Flow_List),
+    \+ Id_Flow = Id_Flow_List,
+    getFlowById(T, Id_Flow, Resultado).
+getFlowById([H | _], _, H).

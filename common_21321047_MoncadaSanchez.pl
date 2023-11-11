@@ -1,4 +1,4 @@
-:- module(common_21321047_MoncadaSanchez, [eliminarRepetidos/2, addToEnd/3]).
+:- module(common_21321047_MoncadaSanchez, [eliminarRepetidos/2, addToEnd/3, downcaseLista/2]).
 
 %Descripcion: Predicado elimina un elemento del resto.
 %Dominio: Elemento (int | string) x Lista (list) x Resultado(list).
@@ -33,3 +33,8 @@ eliminarRepetidos([H | T], [H | Resultado]) :-
 addToEnd(Elemento, [], [Elemento]).
 addToEnd(Elemento, [H | T], [H | NT]) :-
     addToEnd(Elemento, T, NT).
+
+downcaseLista([], []).
+downcaseLista([H | T], [LowerH | LowerT]) :-
+    downcase_atom(H, LowerH),  
+    downcaseLista(T, LowerT).  

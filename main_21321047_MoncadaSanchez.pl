@@ -4,6 +4,7 @@
 :- use_module(chatbot_21321047_MoncadaSanchez).
 :- use_module(system_21321047_MoncadaSanchez).
 :- use_module(user_21321047_MoncadaSanchez).
+:- use_module(chathistory_21321047_MoncadaSanchez).
 
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option
@@ -51,7 +52,7 @@ chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, Chatbot):-
 
 %Descripcion: Predicado que añade un Flow a un Chatbot.
 %Dominio: chatbot X flow X chatbot.
-%Metodo: Ninguno.
+%Metodo: Recursion de Cola en el predicado "addToEnd".
 %Metas primarias: chatbotAddFlow/3.
 %Metas secundarias: getChatbotFlows/2, maplist/3, getFlowId/2, member/2, addToEnd/3, mChatbot/6.
 chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
@@ -109,7 +110,7 @@ systemAddUser(SystemIn, User, SystemOut):-
     setSystemNewUser(SystemIn, NewUsers_List, SystemOut).
 
 %Descripcion: Predicado que permite logear un User a un System.
-%Dominio: SystemIn X User X SystemOut.
+%Dominio: SystemIn X User (string) X SystemOut.
 %Metodo: Ninguno.
 %Metas primarias: systemLogin/3.
 %Metas secundarias: getSystemUsers/2, member/2, isLogedUser/1, setSystemNewLogedUser/3.
@@ -118,3 +119,42 @@ systemLogin(SystemIn, User, SystemOut):-
     member(User, Users_List),   
     isLogedUser(SystemIn),
     setSystemNewLogedUser(SystemIn, [User], SystemOut).
+
+%Descripcion: Predicado que permite deslogear un System.
+%Dominio: SystemIn X SystemOut.
+%Metodo: Ninguno.
+%Metas primarias: systemLogout/3.
+%Metas secundarias: isLogedUser/1, setSystemNewLogedUser/3.
+systemLogout(SystemIn, SystemOut):-
+    \+ isLogedUser(SystemIn),
+    setSystemNewLogedUser(SystemIn, [], SystemOut).
+
+%Descripcion: Predicado que permite deslogear un System.
+%Dominio: SystemIn X SystemOut.
+%Metodo: Ninguno.
+%Metas primarias: systemLogout/3.
+%Metas secundarias: isLogedUser/1, setSystemNewLogedUser/3.
+systemTalkRec(SystemIn, Message, SystemOut):-
+    \+ isLogedUser(SystemIn),
+    getSystemOptionByMessage(SystemIn, Message, Option),
+    configureAndVerifySystemTalk(SystemIn, Message, Option, SystemOut).
+systemTalkRec(SystemIn, _, SystemIn).
+
+configureAndVerifySystemTalk(SystemIn, Message, Option, SystemOut):-
+    getOptionCodelink(Option, NewActualChatbotCodeLink),
+    getOptionInitialFlowCodeLink(Option, NewActualFlowCodeLink),
+    getSystemLogedUserString(SystemIn, User),
+    get_time(FechaCreacion),
+    chathistorymMessage(FechaCreacion, User, Message, NewActualChatbotCodeLink, NewActualFlowCodeLink, Register),
+    getSystemChatHistory(SystemIn, ChatHistory),
+    addToEnd(Register, ChatHistory, NewChatHistory),
+    setSystemTalk(SystemIn, NewActualChatbotCodeLink, NewActualFlowCodeLink, NewChatHistory, SystemOut).
+configureAndVerifySystemTalk(SystemIn, Message, _, SystemOut):-
+    getSystemActualChatbotCodeLink(SystemIn, ActualChatbotCodeLink),
+    getSystemActualFlowCodeLink(SystemIn, ActualFlowCodeLink),
+    getSystemLogedUserString(SystemIn, User),
+    getSystemChatHistory(SystemIn, ChatHistory),
+    get_time(FechaCreacion),
+    chathistorymMessage(FechaCreacion, User, Message, ActualChatbotCodeLink, ActualFlowCodeLink, Register),
+    addToEnd(Register, ChatHistory, NewChatHistory),
+    setSystemNoTalk(SystemIn, NewChatHistory, SystemOut).

@@ -1,4 +1,6 @@
-:- module(chatbot_21321047_MoncadaSanchez, [mChatbot/6, getChatbotId/2 ,getChatbotFlows/2, getChatbotFlowsClean/3, getChatbotInitialFlowIdById/3]).
+:- module(chatbot_21321047_MoncadaSanchez, [mChatbot/6, getChatbotId/2 ,getChatbotFlows/2,
+                                            getChatbotFlowsClean/3, getChatbotInitialFlowIdById/3,
+                                            getChatbotById/3]).
 
 :- use_module(flow_21321047_MoncadaSanchez).
 
@@ -59,3 +61,10 @@ getChatbotInitialFlowIdById(Id, [H | T], Resultado):-
     getChatbotInitialFlowIdById(Id, T, Resultado).
 getChatbotInitialFlowIdById(_, [H | _], Resultado):-
     getChatbotStartFlowId(H, Resultado).
+
+getChatbotById([], _, []).
+getChatbotById([H | T], Id_Chatbot, Resultado):-
+    getChatbotId(H, Id_Chatbot_List),
+    \+ Id_Chatbot = Id_Chatbot_List,
+    getChatbotById(T, Id_Chatbot, Resultado).
+getChatbotById([H | _], _, H).
