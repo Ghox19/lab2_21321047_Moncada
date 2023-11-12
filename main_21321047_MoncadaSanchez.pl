@@ -117,7 +117,6 @@ systemAddUser(SystemIn, User, SystemOut):-
 systemLogin(SystemIn, User, SystemOut):-
     getSystemUsers(SystemIn, Users_List),
     member(User, Users_List),   
-    isLogedUser(SystemIn),
     setSystemNewLogedUser(SystemIn, [User], SystemOut).
 
 %Descripcion: Predicado que permite deslogear un System.
@@ -129,32 +128,33 @@ systemLogout(SystemIn, SystemOut):-
     \+ isLogedUser(SystemIn),
     setSystemNewLogedUser(SystemIn, [], SystemOut).
 
-%Descripcion: Predicado que permite deslogear un System.
-%Dominio: SystemIn X SystemOut.
-%Metodo: Ninguno.
-%Metas primarias: systemLogout/3.
-%Metas secundarias: isLogedUser/1, setSystemNewLogedUser/3.
+%Descripcion: Predicado que permite interactuar con un System.
+%Dominio: system X message (string) X system.
+%Metodo: Recursion de cola en la funcion "getSystemOptionByMessage" y "configureAndVerifySystemTalk".
+%Metas primarias: systemTalkRec/3.
+%Metas secundarias: isLogedUser/1, getSystemOptionByMessage/3, configureAndVerifySystemTalk/4.
 systemTalkRec(SystemIn, Message, SystemOut):-
     \+ isLogedUser(SystemIn),
     getSystemOptionByMessage(SystemIn, Message, Option),
     configureAndVerifySystemTalk(SystemIn, Message, Option, SystemOut).
-systemTalkRec(SystemIn, _, SystemIn).
 
-configureAndVerifySystemTalk(SystemIn, Message, Option, SystemOut):-
-    getOptionCodelink(Option, NewActualChatbotCodeLink),
-    getOptionInitialFlowCodeLink(Option, NewActualFlowCodeLink),
-    getSystemLogedUserString(SystemIn, User),
-    get_time(FechaCreacion),
-    chathistorymMessage(FechaCreacion, User, Message, NewActualChatbotCodeLink, NewActualFlowCodeLink, Register),
-    getSystemChatHistory(SystemIn, ChatHistory),
-    addToEnd(Register, ChatHistory, NewChatHistory),
-    setSystemTalk(SystemIn, NewActualChatbotCodeLink, NewActualFlowCodeLink, NewChatHistory, SystemOut).
-configureAndVerifySystemTalk(SystemIn, Message, _, SystemOut):-
-    getSystemActualChatbotCodeLink(SystemIn, ActualChatbotCodeLink),
-    getSystemActualFlowCodeLink(SystemIn, ActualFlowCodeLink),
-    getSystemLogedUserString(SystemIn, User),
-    getSystemChatHistory(SystemIn, ChatHistory),
-    get_time(FechaCreacion),
-    chathistorymMessage(FechaCreacion, User, Message, ActualChatbotCodeLink, ActualFlowCodeLink, Register),
-    addToEnd(Register, ChatHistory, NewChatHistory),
-    setSystemNoTalk(SystemIn, NewChatHistory, SystemOut).
+%Descripcion: Predicado que permite obtener un string formateado de las interacciones realizadas en un System de un User
+%Dominio: system X User (string) X Message (string).
+%Metodo: Recursion de cola en la funcion "concatenarConSaltos".
+%Metas primarias: systemSynthesis/3.
+%Metas secundarias: getSystemChatHistory/2, getFormatMessages/4, concatenarConSaltos/2.
+systemSynthesis(System, User, Message):-
+    getSystemChatHistory(System, ChatHistory),
+    getFormatMessages(ChatHistory, User, System, FormattedMessages),
+    concatenarConSaltos(FormattedMessages, Message).
+
+%Descripcion: Predicado que permite simular un diálogo entre dos chatbots del sistema.
+%Dominio: system X MaxInteraccion (int) X Seed (int) X system.
+%Metodo: Recursion de cola en la funcion "systemSimulateRec".
+%Metas primarias: systemSimulate/3.
+%Metas secundarias: systemLogout/2, getUserBySeed/2, systemAddUser/3, systemLogin/3, systemSimulateRec/4.
+systemSimulate(SystemIn, MaxInteractions, Seed, SystemOut):-
+    getUserBySeed(Seed, UserName),
+    systemAddUser(SystemIn, UserName, SystemNewUser),
+    systemLogin(SystemNewUser, UserName, SystemSet),
+    systemSimulateRec(SystemSet, MaxInteractions, Seed, SystemOut).

@@ -1,6 +1,6 @@
-:- module(chatbot_21321047_MoncadaSanchez, [mChatbot/6, getChatbotId/2 ,getChatbotFlows/2,
-                                            getChatbotFlowsClean/3, getChatbotInitialFlowIdById/3,
-                                            getChatbotById/3]).
+:- module(chatbot_21321047_MoncadaSanchez, [mChatbot/6, getChatbotId/2, getChatbotName/2,
+                                            getChatbotFlows/2, getChatbotById/3,
+                                            getChatbotFlowsClean/3, getChatbotInitialFlowIdById/3]).
 
 :- use_module(flow_21321047_MoncadaSanchez).
 
@@ -12,13 +12,21 @@
 mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, 
     [ChatbotID, Name, WelcomeMessage, StartFlowId, Flows]).
 
-%Descripcion: Predicado que obtiene un Id de un Chatbot
-%Dominio: Chatbot (list) x Id (int)
+%Descripcion: Predicado que obtiene un Id de un Chatbot.
+%Dominio: Chatbot (list) x Id (int).
 %Metodo: Ninguno.
 %Metas primarias: getChatbotId/2.
 %Metas secundarias: mChatbot/6.
 getChatbotId(Chatbot, Id) :-
     mChatbot(Id, _, _, _, _, Chatbot).
+
+%Descripcion: Predicado que obtiene un Nombre de un Chatbot.
+%Dominio: Chatbot (list) x Name (string).
+%Metodo: Ninguno.
+%Metas primarias: getChatbotId/2.
+%Metas secundarias: mChatbot/6.
+getChatbotName(Chatbot, Name) :-
+    mChatbot(_, Name, _, _, _, Chatbot).
 
 %Descripcion: Predicado que obtiene una lista de Flows de un Chatbot
 %Dominio: Chatbot (list) x Flows(list)
@@ -49,22 +57,27 @@ getChatbotFlowsClean([H | T], [HO | TO], Resultado) :-
 getChatbotFlowsClean([_ | T], [HO | TO], [HO | Resultado]) :-
     getChatbotFlowsClean(T, TO, Resultado).
 
-%Descripcion: Predicado creador de una lista de Flows limpia(sin repetidos) a base de lista de id
+%Descripcion: Predicado que obtiene una lista de Flows limpia(sin repetidos) a base de lista de id
 %Dominio: IdChatbot (int) x ListaDeChatbots (list) x Resultado(int)
 %Metodo: Recursion de cola
 %Metas primarias: getChatbotFlowInitialFlowIdById/3.
 %Metas secundarias: getChatbotId/2, getChatbotStartFlowId/2.
 getChatbotInitialFlowIdById(_, [], []).
 getChatbotInitialFlowIdById(Id, [H | T], Resultado):-
-    getChatbotId(H, Id_Chatbot),
-    \+ Id = Id_Chatbot,
+    getChatbotId(H, IdChatbot),
+    \+ Id = IdChatbot,
     getChatbotInitialFlowIdById(Id, T, Resultado).
 getChatbotInitialFlowIdById(_, [H | _], Resultado):-
     getChatbotStartFlowId(H, Resultado).
 
+%Descripcion: Predicado que obtiene un Flow a base de un Id
+%Dominio: Chatbot (list) x IdChatbot (int) x Resultado(Flow)
+%Metodo: Recursion de cola.
+%Metas primarias: getChatbotById/3.
+%Metas secundarias: getChatbotId/2.
 getChatbotById([], _, []).
-getChatbotById([H | T], Id_Chatbot, Resultado):-
-    getChatbotId(H, Id_Chatbot_List),
-    \+ Id_Chatbot = Id_Chatbot_List,
-    getChatbotById(T, Id_Chatbot, Resultado).
+getChatbotById([H | T], IdChatbot, Resultado):-
+    getChatbotId(H, IdChatbot_List),
+    \+ IdChatbot = IdChatbot_List,
+    getChatbotById(T, IdChatbot, Resultado).
 getChatbotById([H | _], _, H).

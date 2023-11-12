@@ -1,5 +1,5 @@
 :- module(flow_21321047_MoncadaSanchez, [mFlow/4, getFlowId/2, getFlowOptionsClean/3, 
-                                        getFlowOptions/2, getFlowById/3]).
+                                        getFlowNameMsg/2, getFlowOptions/2, getFlowById/3]).
 
 :- use_module(option_21321047_MoncadaSanchez).
 
@@ -18,6 +18,14 @@ mFlow(Id, Name_msg, Option, [Id, Name_msg, Option]).
 getFlowId(Flow, Id) :-
     mFlow(Id, _, _, Flow).
 
+%Descripcion: Predicado que obtiene un Namemsg de un Flow
+%Dominio: Flow (list) x NameMsg (string)
+%Metodo: Ninguno.
+%Metas primarias: getOptionsFlow/2.
+%Metas secundarias: mFlow/4.
+getFlowNameMsg(Flow, NameMsg) :-
+    mFlow(_, NameMsg, _, Flow).
+
 %Descripcion: Predicado que obtiene una lista de Opciones de un Flow
 %Dominio: Flow (list) x Options(list)
 %Metodo: Ninguno.
@@ -26,9 +34,9 @@ getFlowId(Flow, Id) :-
 getFlowOptions(Flow, Options) :-
     mFlow(_, _, Options, Flow).
 
-%Descripcion: Predicado creador de una lista de Opciones limpia(sin repetidos) a base de lista de id
-%Dominio: ListaDeID (list) x ListaDeOpciones (list) x Resultado(list)
-%Metodo: Recursion de cola
+%Descripcion: Predicado que obtiene una lista de Opciones limpia(sin repetidos) a base de lista de id.
+%Dominio: ListaDeID (list) x ListaDeOpciones (list) x Resultado(list).
+%Metodo: Recursion de cola.
 %Metas primarias: getFlowOptionsClean/3.
 %Metas secundarias: getCodeOption/2.
 getFlowOptionsClean([], _, []).
@@ -39,9 +47,14 @@ getFlowOptionsClean([H | T], [HO | TO], Resultado) :-
 getFlowOptionsClean([_ | T], [HO | TO], [HO | Resultado]) :-
     getFlowOptionsClean(T, TO, Resultado).
 
+%Descripcion: Predicado que obtiene un Flow en base a su Id de una lista de Flow.
+%Dominio: ListaDeFlow (list) x IdFlow (int) x Resultado(Flow).
+%Metodo: Recursion de cola.
+%Metas primarias: getFlowById/3.
+%Metas secundarias: getFlowId/2.
 getFlowById([], _, []).
-getFlowById([H | T], Id_Flow, Resultado):-
-    getFlowId(H, Id_Flow_List),
-    \+ Id_Flow = Id_Flow_List,
-    getFlowById(T, Id_Flow, Resultado).
+getFlowById([H | T], IdFlow, Resultado):-
+    getFlowId(H, IdFlow_List),
+    \+ IdFlow = IdFlow_List,
+    getFlowById(T, IdFlow, Resultado).
 getFlowById([H | _], _, H).
