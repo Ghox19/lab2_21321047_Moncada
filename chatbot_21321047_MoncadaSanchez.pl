@@ -4,6 +4,7 @@
 
 :- use_module(flow_21321047_MoncadaSanchez).
 
+%%CONSTRUCTORES%%
 %Descripcion: Predicado creador de un Chatbot como lista
 %Dominio: chatbotID (int) X name (String) X welcomeMessage (String) X startFlowId(int) X  flows (Lista de 0 o más flujos) X chatbot(list)
 %Metodo: Ninguno.
@@ -12,6 +13,7 @@
 mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, 
     [ChatbotID, Name, WelcomeMessage, StartFlowId, Flows]).
 
+%%SELECTORES%%
 %Descripcion: Predicado que obtiene un Id de un Chatbot.
 %Dominio: Chatbot (list) x Id (int).
 %Metodo: Ninguno.

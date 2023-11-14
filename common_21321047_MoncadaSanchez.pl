@@ -1,6 +1,7 @@
 :- module(common_21321047_MoncadaSanchez, [eliminarRepetidos/2, addToEnd/3, downcaseLista/2, 
                                         concatenarConSaltos/2, myRandom/2]).
 
+%%OTRAS FUNCIONES%%
 %Descripcion: Predicado elimina un elemento del T.
 %Dominio: Elemento (int | string) x Lista (list) x Resultado(list).
 %Metodo: Recursion de Cola.

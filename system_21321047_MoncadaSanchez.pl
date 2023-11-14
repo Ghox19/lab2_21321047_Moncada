@@ -6,7 +6,8 @@
                                            getSystemChatHistory/2, setSystemTalk/5, setSystemNoTalk/3,
                                            getSystemActualChatbotCodeLink/2, getSystemActualFlowCodeLink/2,
                                            configureAndVerifySystemTalk/4, getFormatMessages/4,
-                                           systemSimulateRec/4]).
+                                           systemSimulateRec/4, setSystemLogout/5, getSystemInitialChatbotCodeLink/2,
+                                           setSystemLogout/5]).
 
 :- use_module(chatbot_21321047_MoncadaSanchez).
 :- use_module(flow_21321047_MoncadaSanchez).
@@ -14,8 +15,11 @@
 :- use_module(chathistory_21321047_MoncadaSanchez).
 :- use_module(common_21321047_MoncadaSanchez).
 
+%%CONSTRUCTORES%%
 %Descripcion: Predicado que crea un System como Lista.
-%Dominio: name (string) X InitialChatbotCodeLink (Int) X chatbots (Lista de 0 o más chatbots) X system (list)
+%Dominio: name (string) X Users (list) X LogedUser (list) X ChatHistory (list) X 
+%         InitialChatbotCodeLink (Int) X ActualChatbotCodeLink (int) X
+%         ActualFlowCodeLink (int) X chatbots X system (list)
 %Metodo: Ninguno.
 %Metas primarias: mSystem/9.
 %Metas secundarias: Ninguna.
@@ -29,6 +33,7 @@ mSystem(Name, Users, LogedUser, ChatHistory, InitialChatbotCodeLink, ActualChatb
         ActualFlowCodeLink, 
         Chatbot]).
 
+%%SELECTORES%%
 %Descripcion: Predicado que obtiene una lista de Usuarios de un System
 %Dominio: System x Users (list)
 %Metodo: Ninguno.
@@ -60,6 +65,14 @@ getSystemLogedUserString(System, Loged_User):-
 %Metas secundarias: mSystem/9.
 getSystemChatHistory(System, ChatHistory):-
     mSystem(_, _, _, ChatHistory, _, _, _, _, System).
+
+%Descripcion: Predicado que obtiene el codigo inicial de un Chatbot de un System
+%Dominio: System x InitialChatbotCodeLink (int)
+%Metodo: Ninguno.
+%Metas primarias: getSystemInitialChatbotCodeLink/2.
+%Metas secundarias: mSystem/9.
+getSystemInitialChatbotCodeLink(System, InitialChatbotCodeLink):-
+    mSystem(_, _, _, _, _, InitialChatbotCodeLink, _, _, System).
 
 %Descripcion: Predicado que obtiene el codigo actual de un Chatbot de un System
 %Dominio: System x ActualChatbotCodeLink (int)
@@ -122,6 +135,7 @@ getFormatMessagesAux([H | T], User, System, FormattedMessages, Acc):-
     append(Acc, [FormattedMessage], NewAcc),
     getFormatMessagesAux(T, User, System, FormattedMessages, NewAcc).
 
+%%MODIFICADORES%%
 %Descripcion: Predicado que define un nuevo System con una nueva lista de Chatbots
 %Dominio: SystemIn x NewSystemChatbots (list) x SystemOut 
 %Metodo: Ninguno.
@@ -197,6 +211,31 @@ setSystemNewLogedUser(SystemIn, LogedUser, SystemOut):-
             System_ChatbotsInput,
             SystemOut).
 
+%Descripcion: Predicado que define un nuevo System con un Usuario Deslogeado
+%Dominio: SystemIn x LogedUser (string) x ActualChatbotCodeLink (int) x ActualFlowCodelink (int) x SystemOut 
+%Metodo: Ninguno.
+%Metas primarias: setSystemLogout/3.
+%Metas secundarias: mSystem/9.
+setSystemLogout(SystemIn, LogedUser, ActualChatbotCodeLink, ActualFlowCodeLink, SystemOut):-
+    mSystem(NameInput, 
+            Users_ListInput, 
+            _, 
+            ChatHistoryInput, 
+            InitialChatbotCodeLinkInput, 
+            _, 
+            _,
+            System_ChatbotsInput,
+            SystemIn),
+    mSystem(NameInput, 
+            Users_ListInput, 
+            LogedUser, 
+            ChatHistoryInput, 
+            InitialChatbotCodeLinkInput, 
+            ActualChatbotCodeLink, 
+            ActualFlowCodeLink,
+            System_ChatbotsInput,
+            SystemOut).
+
 %Descripcion: Predicado que define un nuevo System luego de una interaccion.
 %Dominio: SystemIn x ActualChatbotCodeLink (int) x ActualFlowCodeLink (int) x ChatHistory (list) x SystemOut 
 %Metodo: Ninguno.
@@ -247,6 +286,7 @@ setSystemNoTalk(SystemIn, ChatHistory, SystemOut):-
             System_ChatbotsInput,
             SystemOut).
 
+%%OTRAS FUNCIONES%%
 %Descripcion: Predicado que configura y verifica una interaccion a base de la existencia de una opcion posible
 %Dominio: SystemIn x Message (string) x Option x SystemOut 
 %Metodo: Recursion de cola en la funcion "addToEnd".

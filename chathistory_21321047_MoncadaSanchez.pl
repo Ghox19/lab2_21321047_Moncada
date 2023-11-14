@@ -3,6 +3,7 @@
                                                 getChatHistoryMessage/2, getChatHistoryChatbotId/2,
                                                 getChatHistoryFlowId/2]).
 
+%%CONSTRUCTORES%%
 %Descripcion: Predicado creador de un mensaje de ChatHistory.
 %Dominio: FechaCreacion (float) x User (string) x Message (string) x ChatbotId (int) x FlowId (int) x Message (list).
 %Metodo: Ninguno.
@@ -11,6 +12,7 @@
 chathistorymMessage(FechaCreacion, User, Message, ChatbotId, FlowId, 
     [FechaCreacion, User, Message, ChatbotId, FlowId]).
 
+%%SELECTORES%%
 %Descripcion: Predicado que obtiene una fecha de creacion de un Message de Chathistory.
 %Dominio: ChatHistoryMessage (list) x FechaCreacion (float).
 %Metodo: Ninguno.

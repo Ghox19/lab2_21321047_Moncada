@@ -4,6 +4,7 @@
 
 :- use_module(common_21321047_MoncadaSanchez).
 
+%%CONSTRUCTORES%%
 %Descripcion: Predicado creador de una opcion
 %Dominio: code (Int)  X message (String)  X ChatbotCodeLink (Int) X InitialFlowCodeLink (Int) X Keyword (lista de 0 o más palabras claves) X Option (list)
 %Metodo: Ninguno.
@@ -12,6 +13,7 @@
 mOption(Code, Message, Codelink, InitialFlowCodeLink, Keywords, 
     [Code, Message, Codelink, InitialFlowCodeLink, Keywords]).
 
+%%SELECTORES%%
 %Descripcion: Predicado que obtiene un Code de un Option
 %Dominio: Option (list) x Code (int)
 %Metodo: Ninguno.

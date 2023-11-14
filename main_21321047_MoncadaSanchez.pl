@@ -1,3 +1,7 @@
+:- module(main_21321047_MoncadaSanchez, [option/6, flow/4, flowAddOption/3, chatbot/6, chatbotAddFlow/3,
+                                           system/4, systemAddChatbot/3, systemAddUser/3, systemLogin/3,
+                                           systemLogout/2, systemTalkRec/3, systemSynthesis/3, systemSimulate/4]).
+
 :- use_module(option_21321047_MoncadaSanchez).
 :- use_module(common_21321047_MoncadaSanchez).
 :- use_module(flow_21321047_MoncadaSanchez).
@@ -96,7 +100,6 @@ systemAddChatbot(SystemIn, Chatbot, SystemOut):-
     \+ member(Chatbot_ID, System_ID_Chatbots),
     addToEnd(Chatbot, System_Chatbots, NewSystem_Chatbots),
     setSystemNewChatbot(SystemIn, NewSystem_Chatbots, SystemOut).
-systemAddChatbot(SystemIn, _, SystemIn).
 
 %Descripcion: Predicado que agrega un Usuario a un System.
 %Dominio: SystemIn X User X SystemOut.
@@ -121,12 +124,16 @@ systemLogin(SystemIn, User, SystemOut):-
 
 %Descripcion: Predicado que permite deslogear un System.
 %Dominio: SystemIn X SystemOut.
-%Metodo: Ninguno.
+%Metodo: Recursion de cola en la funcion "getChatbotInitialFlowIdById".
 %Metas primarias: systemLogout/3.
-%Metas secundarias: isLogedUser/1, setSystemNewLogedUser/3.
+%Metas secundarias: isLogedUser/1, getSystemInitialChatbotCodeLink/2, getSystemChatbot/2, 
+%                   getChatbotInitialFlowIdById/3, setSystemLogout/5.
 systemLogout(SystemIn, SystemOut):-
     \+ isLogedUser(SystemIn),
-    setSystemNewLogedUser(SystemIn, [], SystemOut).
+    getSystemInitialChatbotCodeLink(SystemIn, InitialChatbotCodeLink),
+    getSystemChatbot(SystemIn, Chatbot),
+    getChatbotInitialFlowIdById(InitialChatbotCodeLink, Chatbot, IntialFlowCodeLink),
+    setSystemLogout(SystemIn, [], InitialChatbotCodeLink, IntialFlowCodeLink, SystemOut).
 
 %Descripcion: Predicado que permite interactuar con un System.
 %Dominio: system X message (string) X system.

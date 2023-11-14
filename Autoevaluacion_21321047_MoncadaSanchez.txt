@@ -1,0 +1,76 @@
+Requerimientos Funcionales:
+1. TDAs
+Autoevaluación: 1
+
+2. TDA option - constructor(option)
+Autoevaluación: 1
+
+3. TDA flow - constructor(flow)
+Autoevaluación: 1
+
+4. TDA flow - modificador(flowAddOption)
+Autoevaluación: 1
+
+5. TDA chatbot - constructor(chatbot)
+Autoevaluación: 1
+
+6. TDA chatbot - modificador(chatbotAddFlow)
+Autoevaluación: 1
+
+7. TDA system - constructor(system)
+Autoevaluación: 1
+
+8. TDA system - modificador(systemAddChatbot)
+Autoevaluación: 1
+
+9. TDA system - modificador(systemAddUser)
+Autoevaluación: 1
+
+10. TDA system - systemLogin
+Autoevaluación: 1
+
+11. TDA system - systemLogout
+Autoevaluación: 1
+
+12. TDA system - systemTalkRec
+Autoevaluación: 1
+
+13. TDA system - systemSynthesis
+Autoevaluación: 1
+
+14. TDA system - systemSimulate
+Autoevaluación: 1
+
+Requerimientos No Funcionales:
+1. Autoevaluación:
+Autoevaluación: 1
+
+2. Lenguaje
+Autoevaluación: 1
+
+3. Standard
+Autoevaluación: 1
+
+4. Versión
+Autoevaluación: 1
+
+5. No variables
+Autoevaluación: 1
+
+6. Documentación
+Autoevaluación: 1
+
+7. Dom->Rec
+Autoevaluación: 1
+
+8. Organización
+Autoevaluación: 1
+
+9. Historial
+Autoevaluación: 1
+
+10. Script de pruebas
+Autoevaluación: 1
+
+11. Prerrequisitos
+Autoevaluación: 1

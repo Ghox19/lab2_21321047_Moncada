@@ -1,0 +1,7 @@
+Laboratorio de Paradigmas de la programacion Usach 02/2023
+
+Este laboratorio se realizo con la penultima version del enunciado, la cual estipula que
+luego de una interaccion erronea se guarda en el historial del sistema la interaccion realizada,
+de esta manera las unicas posibilidades que el programa falle sean de que no exista el flow o 
+el chatbot o que no exista ningun usuario logeado, esto siendo especificamente en el predicado
+systemTalkRec.

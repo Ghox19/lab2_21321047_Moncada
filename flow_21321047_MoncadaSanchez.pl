@@ -3,6 +3,7 @@
 
 :- use_module(option_21321047_MoncadaSanchez).
 
+%%CONSTRUCTORES%%
 %Descripcion: Predicado creador de un Flow como lista
 %Dominio: id (int) X name-msg (String)  X Option  (Lista de 0 o más opciones) X Flow (list)
 %Metodo: Ninguno.
@@ -10,6 +11,7 @@
 %Metas secundarias: Ninguna.
 mFlow(Id, Name_msg, Option, [Id, Name_msg, Option]).
 
+%%SELECTORES%%
 %Descripcion: Predicado que obtiene un id de un Flow
 %Dominio: Flow (list) x Id(int)
 %Metodo: Ninguno.
