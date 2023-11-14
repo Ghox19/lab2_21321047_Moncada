@@ -103,13 +103,21 @@ getSystemChatbot(System, Chatbot):-
 %Metodo: Recursion de cola
 %Metas primarias: getSystemChatbotsClean/3.
 %Metas secundarias: getChatbotId/2.
-getSystemChatbotsClean([], _, []).
-getSystemChatbotsClean([H | T], [HO | TO], Resultado) :-
-    getChatbotId(HO, OC),
-    \+ H = OC,
-    getSystemChatbotsClean([H | T], TO, Resultado).
-getSystemChatbotsClean([_ | T], [HO | TO], [HO | Resultado]) :-
-    getSystemChatbotsClean(T, TO, Resultado).
+getSystemChatbotsClean([], Acum, ReverseAcum):-
+    reverse(Acum, ReverseAcum).
+
+getSystemChatbotsClean([H | T], Acum, Resultado) :-
+    getChatbotId(H, OptionId),
+    maplist(getChatbotId, Acum, AcumIds),
+    maplist(getChatbotId, T, TIds),
+    \+ member(OptionId, AcumIds),
+    \+ member(OptionId, TIds),
+    addToEnd(H, Acum, NewAcum),
+    getSystemChatbotsClean(T, NewAcum, Resultado),
+    !.
+
+getSystemChatbotsClean([_ | T], Acum, Resultado) :-
+    getSystemChatbotsClean(T, Acum, Resultado).
 
 %Descripcion: Predicado que obtiene un Option a base de un mensaje, realizando la busqueda en el Chatbot actual y su Flow actual.
 %Dominio: System x Message (string) x Option
@@ -126,6 +134,11 @@ getSystemOptionByMessage(SystemIn, Message, Option) :-
     getFlowOptions(Flow, Options_List),
     getOptionByMessage(Options_List, Message, Option).
 
+%Descripcion: Predicado que obtiene los mensajes formateados del chat History
+%Dominio: Messages(list) x User (string) x System x FormattedMessages (string)
+%Metodo: Recursion de cola.
+%Metas primarias: getFormatMessages/4.
+%Metas secundarias: getFormatMessagesAux/5, generateAndFormatMessage/3, append/3.
 getFormatMessages(Messages, User, System, FormattedMessages):-
     getFormatMessagesAux(Messages, User, System, FormattedMessages, []).
 

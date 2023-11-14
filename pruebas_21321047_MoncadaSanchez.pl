@@ -95,37 +95,37 @@ chatbot(2, "Orientador Académico",  "Bienvenido\n¿Qué te gustaría estudiar?"
 %RF 5 -> chatbotAddFlow
 
 chatbotAddFlow(CB01, F2, CB04),
-chatbotAddFlow(CB04, F3, CB05),
-chatbotAddFlow(CB01, F3, CB06),
+% chatbotAddFlow(CB04, F1, CB05), % si se descomenta da falso porque ya existe
+% chatbotAddFlow(CB02, F1, CB06), 
 
 %RF 6 -> system
 
 system("Chatbots Paradigmas1", 0, [CB01], S01),
 system("Chatbots Paradigmas2", 0, [CB01, CB01, CB02], S02),
-system("Chatbots Paradigmas3", 0, [CB05, CB06], S03),
+system("Chatbots Paradigmas3", 0, [CB04, CB04], S03),
 
 %RF 7 -> systemAddChatbot
 
-systemAddChatbot(S01, CB02, S04),
-systemAddChatbot(S04, CB03, S05), 
-systemAddChatbot(S03, CB02, S06),
+% systemAddChatbot(S01, CB01, S04), % si se descomenta da falso porque ya existe
+systemAddChatbot(S01, CB02, S05), 
+% systemAddChatbot(S05, CB02, S06), % si se descomenta da falso porque ya existe
 
 %RF 8 -> systemAddUser
 
-systemAddUser(S06, "user1", S07),
+systemAddUser(S05, "user1", S07),
 systemAddUser(S07, "user2", S08), 
 systemAddUser(S08, "user3", S09),
 
 %RF 9 -> systemLogin
 
 systemLogin(S09, "user1", S010),
-systemLogin(S09, "user1", S011),
+% systemLogin(S010, "user1", S011), % si se descomenta da falso porque ya hay uno logeado
 systemLogin(S09, "user2", S012),
 
 %RF 10 -> systemLogout
 
 systemLogout(S012, S013),
-%systemLogout(S013, S014),%si se descomenta da false
+%systemLogout(S013, S014),%si se descomenta da false porque no hay nadie logeado
 systemLogin(S013, "user2", S015),
 systemLogout(S015, S016),
 

@@ -24,10 +24,8 @@ option(Code, Message, Codelink, InitialFlowCodeLink, Keywords, Option):-
 %Metas primarias: flow/4.
 %Metas secundarias: maplist/3, eliminarRepetidos/2, getOptionsFlowClean/3, mFlow/4.
 flow(Id, Name_msg, Option, Flow):-
-    maplist(getOptionCode, Option, OptionID_List),
-    eliminarRepetidos(OptionID_List, OptionId_Clean),
-    getFlowOptionsClean(OptionId_Clean, Option, Option_Clean),
-    mFlow(Id, Name_msg, Option_Clean, Flow).
+    getFlowOptionsClean(Option, [], OptionClean),
+    mFlow(Id, Name_msg, OptionClean, Flow).
 
 %Descripcion: Predicado que agrega un Flow a una option.
 %Dominio: flow X option X flow.
@@ -49,10 +47,8 @@ flowAddOption(FlowIn, Option, FlowOut):-
 %Metas primarias: chatbot/6.
 %Metas secundarias: getFlowId/2, maplist/3, eliminarRepetidos/2, getChatbotFlowsClean/3, mChatbot/6.
 chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, Chatbot):-
-    maplist(getFlowId, Flows, FlowId_List),
-    eliminarRepetidos(FlowId_List, FlowId_Clean),
-    getChatbotFlowsClean(FlowId_Clean, Flows, Flow_Clean),
-    mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flow_Clean, Chatbot).
+    getChatbotFlowsClean(Flows, [], FlowClean),
+    mChatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, FlowClean, Chatbot).
 
 %Descripcion: Predicado que añade un Flow a un Chatbot.
 %Dominio: chatbot X flow X chatbot.
@@ -60,11 +56,11 @@ chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows, Chatbot):-
 %Metas primarias: chatbotAddFlow/3.
 %Metas secundarias: getChatbotFlows/2, maplist/3, getFlowId/2, member/2, addToEnd/3, mChatbot/6.
 chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
-    getChatbotFlows(ChatbotIn, Chatbot_Flows),
-    maplist(getFlowId, Chatbot_Flows, Chatbot_Id_Flows),
+    getChatbotFlows(ChatbotIn, ChatbotFlows),
+    maplist(getFlowId, ChatbotFlows, Chatbot_Id_Flows),
     getFlowId(Flow, Flow_ID),
     \+ member(Flow_ID, Chatbot_Id_Flows),
-    addToEnd(Flow, Chatbot_Flows, NewChatbot_Flows),
+    addToEnd(Flow, ChatbotFlows, NewChatbot_Flows),
     mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, _, ChatbotIn),
     mChatbot(IdInput, NameInput, WelcomeMessageInput, StartFlowIdInput, NewChatbot_Flows, ChatbotOut).
 
@@ -74,10 +70,8 @@ chatbotAddFlow(ChatbotIn, Flow, ChatbotOut):-
 %Metas primarias: system/4.
 %Metas secundarias: getChatbotId/2, maplist/3, eliminarRepetidos/2, getSystemChatbotsClean/3, getChatbotInitialFlowIdById/3, mSystem/9.
 system(Name, InitialChatbotCodeLink, Chatbot, System):-
-    maplist(getChatbotId, Chatbot, ChatbotID_List),
-    eliminarRepetidos(ChatbotID_List, ChatbotId_Clean),
-    getSystemChatbotsClean(ChatbotId_Clean, Chatbot, Chatbot_Clean),
-    getChatbotInitialFlowIdById(InitialChatbotCodeLink, Chatbot_Clean, ActualFlowCodeLink),
+    getSystemChatbotsClean(Chatbot, [], ChatbotClean),
+    getChatbotInitialFlowIdById(InitialChatbotCodeLink, ChatbotClean, ActualFlowCodeLink),
     mSystem(Name, 
             [], 
             [], 
@@ -85,7 +79,7 @@ system(Name, InitialChatbotCodeLink, Chatbot, System):-
             InitialChatbotCodeLink, 
             InitialChatbotCodeLink, 
             ActualFlowCodeLink, 
-            Chatbot_Clean, 
+            ChatbotClean, 
             System).
 
 %Descripcion: Predicado que agrega un Chatbot a un System.
@@ -120,6 +114,7 @@ systemAddUser(SystemIn, User, SystemOut):-
 systemLogin(SystemIn, User, SystemOut):-
     getSystemUsers(SystemIn, Users_List),
     member(User, Users_List),   
+    isLogedUser(SystemIn),
     setSystemNewLogedUser(SystemIn, [User], SystemOut).
 
 %Descripcion: Predicado que permite deslogear un System.

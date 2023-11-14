@@ -1,6 +1,8 @@
-:- module(flow_21321047_MoncadaSanchez, [mFlow/4, getFlowId/2, getFlowOptionsClean/3, 
-                                        getFlowNameMsg/2, getFlowOptions/2, getFlowById/3]).
+:- module(flow_21321047_MoncadaSanchez, [mFlow/4, getFlowId/2, 
+                                        getFlowNameMsg/2, getFlowOptions/2, getFlowById/3,
+                                        getFlowOptionsClean/3]).
 
+:- use_module(common_21321047_MoncadaSanchez).
 :- use_module(option_21321047_MoncadaSanchez).
 
 %%CONSTRUCTORES%%
@@ -35,6 +37,27 @@ getFlowNameMsg(Flow, NameMsg) :-
 %Metas secundarias: mFlow/4.
 getFlowOptions(Flow, Options) :-
     mFlow(_, _, Options, Flow).
+
+%Descripcion: Predicado elimina elementos repetidos dentro de una lista.
+%Dominio: Lista (list) x Resultado(list).
+%Metodo: Recursion de Cola.
+%Metas primarias: getFlowOptionsClean/2.
+%Metas secundarias: eliminarT/3.
+getFlowOptionsClean([], Acum, ReverseAcum):-
+    reverse(Acum, ReverseAcum).
+
+getFlowOptionsClean([H | T], Acum, Resultado) :-
+    getOptionCode(H, OptionId),
+    maplist(getOptionCode, Acum, AcumIds),
+    maplist(getOptionCode, T, TIds),
+    \+ member(OptionId, AcumIds),
+    \+ member(OptionId, TIds),
+    addToEnd(H, Acum, NewAcum),
+    getFlowOptionsClean(T, NewAcum, Resultado),
+    !.
+
+getFlowOptionsClean([_ | T], Acum, Resultado) :-
+    getFlowOptionsClean(T, Acum, Resultado).
 
 %Descripcion: Predicado que obtiene una lista de Opciones limpia(sin repetidos) a base de lista de id.
 %Dominio: ListaDeID (list) x ListaDeOpciones (list) x Resultado(list).

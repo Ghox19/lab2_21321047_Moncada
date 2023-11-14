@@ -1,32 +1,7 @@
-:- module(common_21321047_MoncadaSanchez, [eliminarRepetidos/2, addToEnd/3, downcaseLista/2, 
+:- module(common_21321047_MoncadaSanchez, [addToEnd/3, downcaseLista/2, 
                                         concatenarConSaltos/2, myRandom/2]).
 
 %%OTRAS FUNCIONES%%
-%Descripcion: Predicado elimina un elemento del T.
-%Dominio: Elemento (int | string) x Lista (list) x Resultado(list).
-%Metodo: Recursion de Cola.
-%Metas primarias: eliminarT/3.
-%Metas secundarias: ninguna.
-eliminarT(_, [], []).
-eliminarT(Elemento, [H | T], Resultado) :-
-    Elemento = H,
-    eliminarT(Elemento, T, Resultado).
-eliminarT(Elemento, [H | T], [H | Resultado]) :-
-    eliminarT(Elemento, T, Resultado).
-
-%Descripcion: Predicado elimina elementos repetidos dentro de una lista.
-%Dominio: Lista (list) x Resultado(list).
-%Metodo: Recursion de Cola.
-%Metas primarias: eliminarRepetidos/2.
-%Metas secundarias: eliminarT/3.
-eliminarRepetidos([], []).
-eliminarRepetidos([H | T], Resultado) :-
-    member(H, T),
-    eliminarT(H, T, Lista_limpia),
-    eliminarRepetidos([H | Lista_limpia], Resultado).
-eliminarRepetidos([H | T], [H | Resultado]) :-
-    eliminarRepetidos(T, Resultado).
-
 %Descripcion: Predicado que agrega un elemento al final de una lista.
 %Dominio: Elemento x Lista (list) x Resultado(list).
 %Metodo: Recursion de Cola.

@@ -3,6 +3,7 @@
                                             getChatbotFlowsClean/3, getChatbotInitialFlowIdById/3]).
 
 :- use_module(flow_21321047_MoncadaSanchez).
+:- use_module(common_21321047_MoncadaSanchez).
 
 %%CONSTRUCTORES%%
 %Descripcion: Predicado creador de un Chatbot como lista
@@ -51,13 +52,21 @@ getChatbotStartFlowId(Chatbot, StartFlowId) :-
 %Metodo: Recursion de cola
 %Metas primarias: getChatbotFlowsClean/3.
 %Metas secundarias: getFlowId/2.
-getChatbotFlowsClean([], _, []).
-getChatbotFlowsClean([H | T], [HO | TO], Resultado) :-
-    getFlowId(HO, OC),
-    \+ H = OC,
-    getChatbotFlowsClean(T, TO, Resultado).
-getChatbotFlowsClean([_ | T], [HO | TO], [HO | Resultado]) :-
-    getChatbotFlowsClean(T, TO, Resultado).
+getChatbotFlowsClean([], Acum, ReverseAcum):-
+    reverse(Acum, ReverseAcum).
+
+getChatbotFlowsClean([H | T], Acum, Resultado) :-
+    getFlowId(H, OptionId),
+    maplist(getFlowId, Acum, AcumIds),
+    maplist(getFlowId, T, TIds),
+    \+ member(OptionId, AcumIds),
+    \+ member(OptionId, TIds),
+    addToEnd(H, Acum, NewAcum),
+    getChatbotFlowsClean(T, NewAcum, Resultado),
+    !.
+
+getChatbotFlowsClean([_ | T], Acum, Resultado) :-
+    getChatbotFlowsClean(T, Acum, Resultado).
 
 %Descripcion: Predicado que obtiene una lista de Flows limpia(sin repetidos) a base de lista de id
 %Dominio: IdChatbot (int) x ListaDeChatbots (list) x Resultado(int)
